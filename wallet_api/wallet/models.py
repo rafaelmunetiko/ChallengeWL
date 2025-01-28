@@ -3,7 +3,16 @@ from django.db import models
 
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',  # Define um nome reverso único
+        blank=True,
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_permissions',  # Define um nome reverso único
+        blank=True,
+    )
 
 class Wallet(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
